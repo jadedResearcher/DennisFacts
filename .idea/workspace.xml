@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3bc10458-8244-411d-8136-48a9598f2e4c" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GiggleSnort.iml" afterPath="$PROJECT_DIR$/GiggleSnort.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/farragotransfer.sh" afterPath="$PROJECT_DIR$/farragotransfer.sh" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/farragotransfer.sh" afterPath="$PROJECT_DIR$/web/farragotransfer.sh" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -50,6 +51,16 @@
       </file>
       <file leaf-file-name="farragotransfer.sh" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/farragotransfer.sh">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="15">
+              <caret line="1" column="154" lean-forward="false" selection-start-line="1" selection-start-column="154" selection-end-line="1" selection-end-column="154" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="farragotransfer.sh" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/farragotransfer.sh">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="15">
               <caret line="1" column="151" lean-forward="false" selection-start-line="1" selection-start-column="151" selection-end-line="1" selection-end-column="151" />
@@ -103,11 +114,11 @@
         <option value="$USER_HOME$/CanvasTest/javascripts/shapeFunctions.js" />
         <option value="$PROJECT_DIR$/web/random.dart" />
         <option value="$PROJECT_DIR$/web/weighted_lists.dart" />
-        <option value="$PROJECT_DIR$/web/farragotransfer.sh" />
         <option value="$PROJECT_DIR$/web/styles.css" />
         <option value="$PROJECT_DIR$/web/main.dart" />
         <option value="$PROJECT_DIR$/web/index.html" />
         <option value="$PROJECT_DIR$/farragotransfer.sh" />
+        <option value="$PROJECT_DIR$/web/farragotransfer.sh" />
       </list>
     </option>
   </component>
@@ -831,13 +842,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/farragotransfer.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="1" column="154" lean-forward="false" selection-start-line="1" selection-start-column="154" selection-end-line="1" selection-end-column="154" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/predicates.dart">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -873,6 +877,14 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/farragotransfer.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" column="154" lean-forward="false" selection-start-line="1" selection-start-column="154" selection-end-line="1" selection-end-column="154" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/farragotransfer.sh">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15">
           <caret line="1" column="151" lean-forward="false" selection-start-line="1" selection-start-column="151" selection-end-line="1" selection-end-column="151" />
