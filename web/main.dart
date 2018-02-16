@@ -1,14 +1,23 @@
 import 'dart:html';
 import "random.dart";
+import 'dart:async';
+
 Element output;
 TextAreaElement textAreaElement;
 
 List<String> fontList = <String>["Times New Roman","Lucida Console","Courier New","Verdana","Arial","Strife","Georgia","Comic Sans MS","Impact","Trebuchet MS","Tahoma","Lucida Sans Unicode"];
-
+int count = 0;
+int maxCount = 113;
 void main() {
   output = querySelector('#output');
+  mainLoop();
+}
+
+Future<Null> mainLoop() async {
   Random rand = new Random();
-  makeImage(output, randomDennisFact(), rand.pickFrom(fontList));
+  await makeImage(output, randomDennisFact(), rand.pickFrom(fontList));
+  count ++;
+  if(count < maxCount)     new Timer(new Duration(milliseconds: 100), () => mainLoop());
 }
 
 
@@ -85,13 +94,14 @@ int convertSentenceToNumber(String sentence) {
 }
 
 //TODO take in a font (random), make text as big as it can be for height
-void makeImage(Element div, String s, String font) {
+Future<Null> makeImage(Element div, String s, String font) async {
   int height = 333;
   int width = 130;
   CanvasElement canvas = new CanvasElement(width: width, height: height);
-  canvas.context2D.setFillColorRgb(0, 0, 255);
+  Random rand = new Random();
+  canvas.context2D.setFillColorRgb(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
   canvas.context2D.fillRect(0, 0, width, height);
-  canvas.context2D.setFillColorRgb(0, 255, 0);
+  canvas.context2D.setFillColorRgb(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
   int fontsize = 28;
   canvas.context2D.font = "${fontsize}px $font";
 
