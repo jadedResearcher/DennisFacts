@@ -2,42 +2,26 @@ import 'dart:html';
 import "random.dart";
 Element output;
 TextAreaElement textAreaElement;
+
+List<String> fontList = <String>["Times New Roman","Lucida Console","Courier New","Verdana","Arial","Strife","Georgia","Comic Sans MS","Impact","Trebuchet MS","Tahoma","Lucida Sans Unicode"];
+
 void main() {
   output = querySelector('#output');
-  textAreaElement = new TextAreaElement();
-  String s = "Ask a question of Dennis.";
-
-  textAreaElement.text = s;
-  textAreaElement.rows = 15;
-  textAreaElement.cols = 50;
-
-  output.append(textAreaElement);
-
-  ButtonElement button = new ButtonElement();
-  button.text = "Ask.";
-
-  window.onKeyDown.listen((KeyboardEvent e) {
-    if(e.keyCode == 13) {
-      dennis(); //arc number strikes again
-    }
-  });
-  output.append(button);
-
-  button.onClick.listen((e) {
-    dennis();
-  });
+  Random rand = new Random();
+  makeImage(output, randomDennisFact(), rand.pickFrom(fontList));
 }
+
+
 
 void dennis() {
   String sentence = textAreaElement.value;
   Element div = new DivElement();
-  div.text = "${convertSentenceToDennisFact(sentence)}";
+  div.text = "${randomDennisFact()}";
   output.append(div);
 }
 
-String convertSentenceToDennisFact(String sentence) {
-  int seed = convertSentenceToNumber(sentence);
-  Random rand = new Random(seed);
+String randomDennisFact() {
+  Random rand = new Random();
   List<String> _animals = <String>["dennis"];
   List<String> _bodyParts = <String>["sporty frock coat","frock coat","head","muscles","arms","brain","legs","feet","hands","eyes","jimberjam","jimberjam","jimberjam","ye flask","trinket","parapet","nice jimberjam"];
   List<String> _numbers = <String>["one","two","three","four","five","six","seven","eight","nine"];
@@ -100,3 +84,93 @@ int convertSentenceToNumber(String sentence) {
   return ret;
 }
 
+//TODO take in a font (random), make text as big as it can be for height
+void makeImage(Element div, String s, String font) {
+  int height = 333;
+  int width = 130;
+  CanvasElement canvas = new CanvasElement(width: width, height: height);
+  canvas.context2D.setFillColorRgb(0, 0, 255);
+  canvas.context2D.fillRect(0, 0, width, height);
+  canvas.context2D.setFillColorRgb(0, 255, 0);
+  int fontsize = 28;
+  canvas.context2D.font = "${fontsize}px $font";
+
+  int buffer = 100;
+  wrap_text(canvas.context2D, s, 10, 30, fontsize, width-buffer, "left");
+  output.append(canvas);
+
+}
+
+
+
+
+
+ int simulateWrapTextToGetFontSize(CanvasRenderingContext2D ctx, String text, num x, num y, num lineHeight, int maxWidth, int maxHeight) {
+    List<String> words = text.split(' ');
+    List<String> lines = <String>[];
+    int sliceFrom = 0;
+    for (int i = 0; i < words.length; i++) {
+    String chunk = words.sublist(sliceFrom, i).join(' ');
+    bool last = i == words.length - 1;
+    bool bigger = ctx
+        .measureText(chunk)
+        .width > maxWidth;
+    if (bigger) {
+    lines.add(words.sublist(sliceFrom, i).join(' '));
+    sliceFrom = i;
+    }
+    if (last) {
+    lines.add(words.sublist(sliceFrom, words.length).join(' '));
+    sliceFrom = i;
+    }
+    }
+    //need to return how many lines i created so that whatever called me knows where to put ITS next line.;
+    return lines.length;
+
+}
+
+
+//http://stackoverflow.com/questions/5026961/html5-canvas-ctx-filltext-wont-do-line-breaks
+ int wrap_text(CanvasRenderingContext2D ctx, String text, num x, num y, num lineHeight, int maxWidth, String textAlign) {
+    if (textAlign == null) textAlign = 'center';
+    ctx.textAlign = textAlign;
+    List<String> words = text.split(' ');
+    List<String> lines = <String>[];
+    int sliceFrom = 0;
+    for (int i = 0; i < words.length; i++) {
+    String chunk = words.sublist(sliceFrom, i).join(' ');
+    bool last = i == words.length - 1;
+    bool bigger = ctx
+        .measureText(chunk)
+        .width > maxWidth;
+    if (bigger) {
+    lines.add(words.sublist(sliceFrom, i).join(' '));
+    sliceFrom = i;
+    }
+    if (last) {
+    lines.add(words.sublist(sliceFrom, words.length).join(' '));
+    sliceFrom = i;
+    }
+    }
+    num offsetY = 0.0;
+    num offsetX = 0;
+    if (textAlign == 'center') offsetX = maxWidth ~/ 2;
+    for (int i = 0; i < lines.length; i++) {
+    ctx.fillText(lines[i], x + offsetX, y + offsetY);
+    offsetY = offsetY + lineHeight;
+    }
+    //need to return how many lines i created so that whatever called me knows where to put ITS next line.;
+    return lines.length;
+}
+
+
+
+
+
+class Size2D {
+  int width;
+  int height;
+
+  Size2D(int this.width, int this.height);
+
+}
