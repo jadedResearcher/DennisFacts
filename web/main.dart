@@ -77,7 +77,7 @@ String randomDennisFact() {
 
 //almost all species of JR gigglesnort when they taunt shoguns
   List<String> ret = <String>["$animal has a record $bodyPart length of $number $unitOfSpace ","$animal has something that looks like a $bodyPart but it's actually a $fakeAlt","$animal yells so loud you can hear it for miles","$animal nervously paces $number times a ${rand.pickFrom(_unitsOfTime)}","$animal has a prehensile $bodyPart","$animal $bodyPart explodes at the end of pacing","scientists have yet to record $animal pacing on film","scientists are testing how $animal paces nervously in space","$animal doesn't have ${bodyPart}s","$animal paces every other year","$animal pacing lasts $number $unitOfTime","$animal nervously pacing lasts $number $unitOfTime","$animal can have $bodyPart $number times a $unitOfTime","$animal are only active for a $number $unitOfTime window a year","$animal has a bone in their $bodyPart","nearly all manifestations of $animal are nervous","$animal invented a simple economy simply to get $bodyPartPlural","$animal pacing is said to be $adj","$animal gains one $bodyPart for every year of life","$animal will die after pacing $number times","$animal is nervously attracted to $noun","$animal showing a nervous $bodyPart is a sign of submission","$animal collects flasks of $number small $bodyPartPlural when it is time to pace","$animal can pace with $number $bodyPartPlural at once","$animal has a $adj $bodyPart","$animal can die if they don't get $bodyPart","$animal can control every single muscle of their $bodyPart ","$animal can pace $number $unitOfSpace into the air","$animal can wear $bodyPartPlural","$animal has a $number $unitOfSpace $bodyPart", "almost all manifestations of $animal $action when they see $noun ","$animal have $number ${bodyPartPlural}", "$animal thinks of pacing $number times a $unitOfTime", "$animal has a $shape $bodyPart","$animal is a place", "$animal has a nice $bodyPart"];
-
+    ret.addAll(<String>["$animal has a strength over ${number} thousand"]);
 
   return rand.pickFrom(ret);
 
@@ -106,7 +106,8 @@ Future<Null> makeImage(Element div, String s, String font) async {
   canvas.context2D.font = "${fontsize}px $font";
 
   int buffer = 100;
-  wrap_text(canvas.context2D, s, 10, 30, fontsize, width-buffer, "left");
+  int bufferY = 35;
+  wrap_text_and_fit_in_height(canvas.context2D, font, s, 10, 30, fontsize, width-buffer, height-bufferY, "left");
   output.append(canvas);
 
 }
@@ -137,6 +138,15 @@ Future<Null> makeImage(Element div, String s, String font) async {
     //need to return how many lines i created so that whatever called me knows where to put ITS next line.;
     return lines.length;
 
+}
+
+int wrap_text_and_fit_in_height(CanvasRenderingContext2D ctx, String font,String text, num x, num y, num lineHeight, int maxWidth, int maxHeight, String textAlign) {
+    int numLines = simulateWrapTextToGetFontSize(ctx,text,x,y,lineHeight,maxWidth, maxHeight);
+    if((numLines * lineHeight)>maxHeight) {
+        int size = (maxHeight/numLines).floor();
+        ctx.font = "${size}px $font";
+    }
+    return wrap_text(ctx, text, x, y, lineHeight, maxWidth, textAlign);
 }
 
 
