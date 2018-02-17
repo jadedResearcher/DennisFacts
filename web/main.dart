@@ -76,7 +76,7 @@ String randomDennisFact() {
   }
 
 //almost all species of JR gigglesnort when they taunt shoguns
-  List<String> ret = <String>["$animal has a record $bodyPart length of $number $unitOfSpace ","$animal has something that looks like a $bodyPart but it's actually a $fakeAlt","$animal yells so loud you can hear it for miles","$animal nervously paces $number times a ${rand.pickFrom(_unitsOfTime)}","$animal has a prehensile $bodyPart","$animal $bodyPart explodes at the end of pacing","scientists have yet to record $animal pacing on film","scientists are testing how $animal paces nervously in space","$animal doesn't have ${bodyPart}s","$animal paces every other year","$animal pacing lasts $number $unitOfTime","$animal nervously pacing lasts $number $unitOfTime","$animal can have $bodyPart $number times a $unitOfTime","$animal are only active for a $number $unitOfTime window a year","$animal has a bone in their $bodyPart","nearly all manifestations of $animal are nervous","$animal invented a simple economy simply to get $bodyPartPlural","$animal pacing is said to be $adj","$animal gains one $bodyPart for every year of life","$animal will die after pacing $number times","$animal is nervously attracted to $noun","$animal showing a nervous $bodyPart is a sign of submission","$animal collects flasks of $number small $bodyPartPlural when it is time to pace","$animal can pace with $number $bodyPartPlural at once","$animal has a $adj $bodyPart","$animal can die if they don't get $bodyPart","$animal can control every single muscle of their $bodyPart ","$animal can pace $number $unitOfSpace into the air","$animal can wear $bodyPartPlural","$animal has a $number $unitOfSpace $bodyPart", "almost all manifestations of $animal $action when they see $noun ","$animal have $number ${bodyPartPlural}", "$animal thinks of pacing $number times a $unitOfTime", "$animal has a $shape $bodyPart","$animal is a place", "$animal has a nice $bodyPart"];
+  List<String> ret = <String>["$animal has a record $bodyPart length of $number $unitOfSpace ","$animal has something that looks like a $bodyPart but it's actually a $fakeAlt","$animal yells so loud you can hear it for miles","$animal nervously paces $number times a ${rand.pickFrom(_unitsOfTime)}","$animal has a prehensile $bodyPart","$animal $bodyPart explodes at the end of pacing","scientists have yet to record $animal pacing on film","scientists are testing how $animal paces nervously in space","$animal doesn't have ${bodyPart}s","$animal paces every other year","$animal pacing lasts $number $unitOfTime","$animal nervously pacing lasts $number $unitOfTime","$animal can have $bodyPart $number times a $unitOfTime","$animal are only active for a $number $unitOfTime window a year","$animal has a bone in their $bodyPart","nearly all manifestations of $animal are nervous","$animal invented a simple economy simply to get $bodyPartPlural","$animal pacing is said to be $adj","$animal gains one $bodyPart for every year of life","$animal will die after pacing $number times","$animal is nervously attracted to $noun","$animal showing a nervous $bodyPart is a sign of submission","$animal collects flasks of $number small $bodyPartPlural when it is time to pace","$animal can pace with $number $bodyPartPlural at once","$animal has a $adj $bodyPart","$animal can die if they don't get $bodyPart","$animal can control every single muscle of their $bodyPart ","$animal can pace $number $unitOfSpace into the air","$animal can wear $bodyPartPlural","$animal has a $number $unitOfSpace $bodyPart", "almost all manifestations of $animal $action when they see $noun ","$animal has $number ${bodyPartPlural}", "$animal thinks of pacing $number times a $unitOfTime", "$animal has a $shape $bodyPart","$animal is a place", "$animal has a nice $bodyPart"];
     ret.addAll(<String>["$animal has a strength over ${number} thousand"]);
 
   return rand.pickFrom(ret);
@@ -93,7 +93,7 @@ int convertSentenceToNumber(String sentence) {
   return ret;
 }
 
-//TODO take in a font (random), make text as big as it can be for height
+
 Future<Null> makeImage(Element div, String s, String font) async {
   int height = 333;
   int width = 130;
@@ -102,12 +102,12 @@ Future<Null> makeImage(Element div, String s, String font) async {
   canvas.context2D.setFillColorRgb(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
   canvas.context2D.fillRect(0, 0, width, height);
   canvas.context2D.setFillColorRgb(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
-  int fontsize = 28;
+  int fontsize = 72;
   canvas.context2D.font = "${fontsize}px $font";
 
   int buffer = 100;
   int bufferY = 35;
-  wrap_text_and_fit_in_height(canvas.context2D, font, s, 10, 30, fontsize, width-buffer, height-bufferY, "left");
+  wrapTextAndResizeIfNeeded(canvas.context2D, font, s, 10, 30, fontsize, width-buffer, height-bufferY);
   output.append(canvas);
 
 }
@@ -121,19 +121,19 @@ Future<Null> makeImage(Element div, String s, String font) async {
     List<String> lines = <String>[];
     int sliceFrom = 0;
     for (int i = 0; i < words.length; i++) {
-    String chunk = words.sublist(sliceFrom, i).join(' ');
-    bool last = i == words.length - 1;
-    bool bigger = ctx
-        .measureText(chunk)
-        .width > maxWidth;
-    if (bigger) {
-    lines.add(words.sublist(sliceFrom, i).join(' '));
-    sliceFrom = i;
-    }
-    if (last) {
-    lines.add(words.sublist(sliceFrom, words.length).join(' '));
-    sliceFrom = i;
-    }
+        String chunk = words.sublist(sliceFrom, i).join(' ');
+        bool last = i == words.length - 1;
+        bool bigger = ctx
+            .measureText(chunk)
+            .width > maxWidth;
+        if (bigger) {
+            lines.add(words.sublist(sliceFrom, i).join(' '));
+            sliceFrom = i;
+        }
+        if (last) {
+            lines.add(words.sublist(sliceFrom, words.length).join(' '));
+            sliceFrom = i;
+        }
     }
     //need to return how many lines i created so that whatever called me knows where to put ITS next line.;
     return lines.length;
@@ -145,8 +145,65 @@ int wrap_text_and_fit_in_height(CanvasRenderingContext2D ctx, String font,String
     if((numLines * lineHeight)>maxHeight) {
         int size = (maxHeight/numLines).floor();
         ctx.font = "${size}px $font";
+        lineHeight = size;
     }
     return wrap_text(ctx, text, x, y, lineHeight, maxWidth, textAlign);
+}
+
+//first, make sure no line will go off screen width
+//second, make sure all lines don't go off screen height
+int wrapTextAndResizeIfNeeded(CanvasRenderingContext2D ctx, String text, String font, num x, num y, num fontSize, int maxWidth, int maxHeight) {
+    List<String> words = text.split(' ');
+    WordWrapMetaData data = wrapLoop(words, ctx, maxWidth);
+    int size = fontSize;
+    //loop to keep within width. no easy calc for this, i THINK
+    while(data.maxWidth > maxWidth) {
+        size = size - 1;
+        ctx.font = "${size}px $font";
+        data = wrapLoop(words, ctx, maxWidth);
+    }
+
+    //take care of keeping in height
+    if((data.lines.length * fontSize)>maxHeight) {
+        int size = (maxHeight/data.lines.length).floor();
+        ctx.font = "${size}px $font";
+        fontSize = size;
+    }
+
+    num offsetY = 0.0;
+    num offsetX = 0;
+    if ( ctx.textAlign == 'center') offsetX = maxWidth ~/ 2;
+    for (int i = 0; i < data.lines.length; i++) {
+        ctx.fillText(data.lines[i], x + offsetX, y + offsetY);
+        offsetY = offsetY + fontSize;
+    }
+    return data.lines.length;
+}
+
+WordWrapMetaData wrapLoop(List<String> words, CanvasRenderingContext2D ctx, int maxWidth) {
+    double largestWidth = 0.0;
+    List<String> lines = new List<String>();
+    int sliceFrom = 0;
+    for (int i = 0; i < words.length; i++) {
+          String chunk = words.sublist(sliceFrom, i).join(' ');
+          bool last = i == words.length - 1;
+          double currentWidth = ctx.measureText(chunk).width;
+          if (currentWidth >  maxWidth) {
+              lines.add(words.sublist(sliceFrom, i).join(' '));
+              sliceFrom = i;
+          }
+          if (last) {
+              lines.add(words.sublist(sliceFrom, words.length).join(' '));
+              sliceFrom = i;
+          }
+    }
+
+    for(String line in lines) {
+        double currentWidth = ctx.measureText(line).width;
+        if(currentWidth > largestWidth) largestWidth = currentWidth;
+    }
+
+    return new WordWrapMetaData(lines, largestWidth);
 }
 
 
@@ -160,12 +217,10 @@ int wrap_text_and_fit_in_height(CanvasRenderingContext2D ctx, String font,String
     for (int i = 0; i < words.length; i++) {
     String chunk = words.sublist(sliceFrom, i).join(' ');
     bool last = i == words.length - 1;
-    bool bigger = ctx
-        .measureText(chunk)
-        .width > maxWidth;
+    bool bigger = ctx.measureText(chunk).width > maxWidth;
     if (bigger) {
-    lines.add(words.sublist(sliceFrom, i).join(' '));
-    sliceFrom = i;
+        lines.add(words.sublist(sliceFrom, i).join(' '));
+        sliceFrom = i;
     }
     if (last) {
     lines.add(words.sublist(sliceFrom, words.length).join(' '));
@@ -193,4 +248,10 @@ class Size2D {
 
   Size2D(int this.width, int this.height);
 
+}
+
+class WordWrapMetaData {
+    List<String> lines;
+    double maxWidth;
+    WordWrapMetaData(this.lines, this.maxWidth);
 }
