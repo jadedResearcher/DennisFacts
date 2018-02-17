@@ -7,7 +7,7 @@ TextAreaElement textAreaElement;
 
 List<String> fontList = <String>["Times New Roman","Lucida Console","Courier New","Verdana","Arial","Strife","Georgia","Comic Sans MS","Impact","Trebuchet MS","Tahoma","Lucida Sans Unicode"];
 int count = 0;
-int maxCount = 1;
+int maxCount = 113;
 void main() {
   output = querySelector('#output');
   mainLoop();
@@ -118,12 +118,11 @@ Future<Null> makeImage(Element div, String s, String font) async {
 int wrapTextAndResizeIfNeeded(CanvasRenderingContext2D ctx, String text, String font, num x, num y, num fontSize, int maxWidth, int maxHeight) {
     List<String> words = text.split(' ');
     WordWrapMetaData data = wrapLoop(words, ctx, maxWidth);
-    num size = fontSize;
     //loop to keep within width. no easy calc for this, i THINK
     while(data.largestLine > maxWidth) {
-        print("Biggest line is ${data.largestLine} but can't be bigger than ${maxWidth}");
-        size = size - 0.1;
-        data.ctx.font = "${size}px $font"; //since the data's context is what matters, make sure you use it
+        //print("Biggest line is ${data.largestLine} but can't be bigger than ${maxWidth}");
+        fontSize = fontSize - 1.0;
+        data.ctx.font = "${fontSize}px $font"; //since the data's context is what matters, make sure you use it
     }
 
     //take care of keeping in height
