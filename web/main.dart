@@ -1,6 +1,7 @@
 import 'dart:html';
-import "random.dart";
 import 'dart:async';
+import 'package:RenderingLib/RendereringLib.dart';
+
 
 Element output;
 TextAreaElement textAreaElement;
@@ -93,14 +94,35 @@ int convertSentenceToNumber(String sentence) {
   return ret;
 }
 
+Future<Null> drawRandomPartOfRandomImage(CanvasElement canvas, Random rand, int subSetWidth) async {
+    int minNum = 1;
+    int maxNum = 13;
+    String randomImageName = "images/${rand.nextInt(13)+minNum}.jpg";
+
+    ImageElement image = await Loader.getResource((randomImageName));
+    //print("got image $image");
+    canvas.context2D.imageSmoothingEnabled = false;
+
+    int startXMin = 0;
+    int startXMax = image.width -subSetWidth;
+    //canvas.context2D.drawImage(image, 0, 0);
+    canvas.context2D.drawImageToRect(image,new Rectangle(0,0,canvas.width,canvas.height), sourceRect: new Rectangle(rand.nextInt(startXMax),0,subSetWidth,image.height));
+
+}
+
 
 Future<Null> makeImage(Element div, String s, String font) async {
   int height = 333;
   int width = 130;
   CanvasElement canvas = new CanvasElement(width: width, height: height);
   Random rand = new Random();
-  canvas.context2D.setFillColorRgb(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
-  canvas.context2D.fillRect(0, 0, width, height);
+  //canvas.context2D.setFillColorRgb(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
+  if(rand.nextDouble() <.87) { //13 % are solid color isntead of image
+      await drawRandomPartOfRandomImage(canvas, rand,130);
+  }else {
+      canvas.context2D.setFillColorRgb(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
+      canvas.context2D.fillRect(0, 0, width, height);
+  }
   canvas.context2D.setFillColorRgb(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
   int fontsize = 48;
   canvas.context2D.font = "${fontsize}px $font";
@@ -249,7 +271,7 @@ class WordWrapMetaData {
     CanvasRenderingContext2D ctx;
 
     WordWrapMetaData(this.lines, this.ctx) {
-        print("made word wrap meta data with ${lines.length} lines");
+        //print("made word wrap meta data with ${lines.length} lines");
     }
 
     num get largestLine {
