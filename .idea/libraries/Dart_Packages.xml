@@ -5,7 +5,7 @@
         <entry key="RenderingLib">
           <value>
             <list>
-              <option value="$USER_HOME$/.pub-cache/git/RenderingLib-8075cd207a33e846108cb86fa16e31bd12654634/lib" />
+              <option value="$USER_HOME$/.pub-cache/git/RenderingLib-fef8c71856ed55dbe988f5703aa1c869b23cfd54/lib" />
             </list>
           </value>
         </entry>
@@ -222,7 +222,7 @@
       </option>
     </properties>
     <CLASSES>
-      <root url="file://$USER_HOME$/.pub-cache/git/RenderingLib-8075cd207a33e846108cb86fa16e31bd12654634/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/git/RenderingLib-fef8c71856ed55dbe988f5703aa1c869b23cfd54/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/archive-1.0.33/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/args-1.3.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/async-1.13.3/lib" />

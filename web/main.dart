@@ -12,6 +12,7 @@ int maxCount = 113;
 void main() {
   output = querySelector('#output');
   mainLoop();
+  storeCard("N4Igzg9grgTgxgUxALhAMQJYDsAm2DmABACIJZYZggA0IWAhgLZKoCyCCALiWRVbZwQAPTihAQA7lgQwyTGYXowYGAG4Iwi7qXKUAdIQASCQhIRLN9QmAAOEGJwCehAGYwIcANaE4Eet3pcRUIAGwgsIgArDEYAIxlIpgNjQht6REtY6G5pGFVoMBDHAwB5WNUMAsJhDE5LWUIAORKAFRIAUUbGgEkAZT0aEFj0z3x3KFxG+TEAIXocVkCwSqw9GwjBzhV8fBkAYQALQMQxAAY9AFZBsERpMBaIAFUsMK8xAG1gAB1waHgEH7IH56EE-ag-BjMQE-AAy5hgWEIAHUjgFCAAFJT0GxcQjdMBgn6CETQ8RSGRyZgwQj4NRgbicA4mFoAJW6jQA0u02pwIDxdJYgkzCEcbDYMEVFGMOJpeYRBCEQoRHNBTKjUlicXVFLIDN0GbAsJpsvKmc4lCZGRAwCYQrVOCETC4yIhnDhzHaNIRwoRhiFfBQNAYWsLGBBwrL1d7ybJIQocLImMaXCL6JZQhBuBAU4yEIwDIShiMxtBJvJSXMFksVmsIoWthgdvsjlhEKTzhdCzcyBoHs9Xp5Se8ALqF2RgKAhOq9Tj+AkoH6fL7LujlldAlfEEqsdkAQUae3ay8JK9U9BCUAB6+PIAAtABGG8AX1HNCJ212MBnc7hYBtMCHV9wRABsmy-Wc6gAcUTQQAIXEAlxXOMbw3H49m3Vh2hZQ8b3BU9z0vFCb0fFcX3rD8ZG-Op2gARygc9AJ+J9qEIb5flgNt4OobjC2Q+DdzAbwJHVKxojiBImEIfR62EThSWjXJKQUMh8HoXZNB0PgpMRR1KFgBBJTwG4oD-GtCAATVteEjVNfwRUoQgxPiGBEkYUw01SDijhtHBvURMBzxMOyrCM3wJm4RglE8XFAl8xk7OFMhIggRxNDSOACEULIoByGR8hMooDEkRS42peJfGYTQslkXzYt9BBaRsxlsE8TL6Gy7g0hgbEuDAPRC2GLwSwmHApiheDK0WI0a3WfByMbT9DmOAF4I7Ltbl7J4Xg8Qd4JHMcNEnacIPnIEEO+JC12hTdtz3A8jxXPCfjPC8r2un4H2fID3wWyiTt-f9GLfECKPAudoPMWCgeA0DPyosBaPokIgeY1ifkgDiVrOkF+uBvizpmBAKpMTTKBkkl4IUilSqkzQsEkfk+AMdp1BgFVpFpxn9EIFmZHZkwHIkWoDi5vq8W4Bz8HDHBceAwbRnGMtxrOgAWU4VbSXZyvoEyODgOADlrObgdh5tlvbPQACZH2B7s7j7bavGhn5xyOsB4aHC6ISuhcV3QlkWUedEWm6EpGkIdD2jQNBuj2bpOhaXCbxewjrxXe9TmfFivdXKE05+GYYV3Xp0UMdpWBKAANcyk-w16iJXAA2Zus7Ry68-ekBegARUebpiGIGF2l6ToR9r56CLe32fgzr75rA+GAZkZ2Qd+sGoJg5e9u+1eF5OxGGO3pjh0GV2p3dk6PjY-Gfi3HdGn3HDgZTrGPptl9NlBxeNH-D4T4EL+J0Ib+BkH-T+a94YHxCFfb2ytb63QfvdQsL92zHxAE+IAA");
 }
 
 Future<Null> mainLoop() async {
@@ -19,6 +20,17 @@ Future<Null> mainLoop() async {
   await makeImage(output, randomDennisFact(), rand.pickFrom(fontList));
   count ++;
   if(count < maxCount)     new Timer(new Duration(milliseconds: 100), () => mainLoop());
+}
+
+void storeCard(String card) {
+    String key = "LIFESIMFOUNDCARDS";
+    if(window.localStorage.containsKey(key)) {
+        String existing = window.localStorage[key];
+        List<String> parts = existing.split(",");
+        if(!parts.contains(card)) window.localStorage[key] = "$existing,$card";
+    }else {
+        window.localStorage[key] = card;
+    }
 }
 
 
@@ -129,7 +141,7 @@ Future<Null> makeImage(Element div, String s, String font) async {
 
   int buffer = 10;
   int bufferY = 10;
-  wrapTextAndResizeIfNeeded(canvas.context2D, s, font, 10, 30, fontsize, width-buffer, height-bufferY);
+  Renderer.wrapTextAndResizeIfNeeded(canvas.context2D, s, font, 10, 30, fontsize, width-buffer, height-bufferY);
   output.append(canvas);
 
 }
